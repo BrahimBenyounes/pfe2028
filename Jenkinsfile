@@ -12,8 +12,6 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_VERSION = '1.0.0'
-        DOCKER_HUB_USERNAME = 'brahim2023'
-        DOCKER_HUB_PASSWORD = 'Lifeisgoodbrahim@@'
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
         SONAR_HOST_URL = 'http://192.168.186.128:9001'
         SONAR_LOGIN = 'admin'
@@ -22,8 +20,6 @@ pipeline {
 
     stages {
 
-     
-     
         stage('Build Docker Images') {
             steps {
                 script {
@@ -44,8 +40,8 @@ pipeline {
         stage('Deploy Microservices') {
             steps {
                 script {
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
+                    sh "docker compose -f ${DOCKER_COMPOSE_FILE} down"
+                    sh "docker compose -f ${DOCKER_COMPOSE_FILE} up -d"
                 }
             }
         }
@@ -53,17 +49,19 @@ pipeline {
         stage('Push Docker Images to Docker Hub') {
             steps {
                 script {
-                    sh "docker login -u ${env.DOCKER_HUB_USERNAME} -p ${env.DOCKER_HUB_PASSWORD}"
-                    def services = [
-                        "discovery-service", "gateway-service", "product-service",
-                        "formation-service", "order-service", "notification-service",
-                        "login-service", "contact-service"
-                    ]
-                    services.each { serviceName ->
-                        def localTag = "${serviceName}:${DOCKER_IMAGE_VERSION}"
-                        def remoteTag = "${DOCKER_HUB_USERNAME}/${serviceName}:${DOCKER_IMAGE_VERSION}"
-                        sh "docker tag ${localTag} ${remoteTag}"
-                        sh "docker push ${remoteTag}"
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-creds', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+                        sh "docker login -u ${DOCKER_HUB_USERNAME} -p ${DOCKER_HUB_PASSWORD}"
+                        def services = [
+                            "discovery-service", "gateway-service", "product-service",
+                            "formation-service", "order-service", "notification-service",
+                            "login-service", "contact-service"
+                        ]
+                        services.each { serviceName ->
+                            def localTag = "${serviceName}:${DOCKER_IMAGE_VERSION}"
+                            def remoteTag = "${DOCKER_HUB_USERNAME}/${serviceName}:${DOCKER_IMAGE_VERSION}"
+                            sh "docker tag ${localTag} ${remoteTag}"
+                            sh "docker push ${remoteTag}"
+                        }
                     }
                 }
             }
