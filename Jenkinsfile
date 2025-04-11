@@ -12,6 +12,9 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_VERSION = '1.0.0'
+        DOCKER_HUB_USERNAME = 'brahim2023'
+        DOCKER_HUB_PASSWORD = 'Lifeisgoodbrahim@@'
+        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
         SONAR_HOST_URL = 'http://192.168.186.128:9001'
         SONAR_LOGIN = 'admin'
