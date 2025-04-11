@@ -26,7 +26,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    ["product-service"].each { project ->
+                    ["login-service"].each { project ->
                         echo "Processing project: ${project}"
                         def projectKey = "${project}-${getTimeStamp()}"
                         dir(project) {
