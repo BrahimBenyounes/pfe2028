@@ -26,24 +26,17 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    ["contact-service", "login-service"].each { project ->
+                    ["product-service"].each { project ->
+                        echo "Processing project: ${project}"
                         def projectKey = "${project}-${getTimeStamp()}"
-                        echo "Running SonarQube analysis for ${project} as ${projectKey}"
                         dir(project) {
                             sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true'
-                            sh """
-                                mvn sonar:sonar \
-                                    -Dsonar.login=${env.SONAR_LOGIN} \
-                                    -Dsonar.password=${env.SONAR_PASSWORD} \
-                                    -Dsonar.projectKey=${projectKey} \
-                                    -Dsonar.host.url=${env.SONAR_HOST_URL}
-                            """
+                            sh "mvn sonar:sonar -Dsonar.login=${env.SONAR_LOGIN} -Dsonar.password=${env.SONAR_PASSWORD} -Dsonar.projectKey=${projectKey} -Dsonar.host.url=${env.SONAR_HOST_URL}"
                         }
                     }
                 }
             }
         }
-
         stage('Build Docker Images') {
             steps {
                 script {
