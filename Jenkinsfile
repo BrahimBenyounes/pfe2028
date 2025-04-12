@@ -43,7 +43,7 @@ pipeline {
                     ["login-service"].each { project ->
                         echo "Deploying project: ${project}"
                         dir(project) {
-                            sh 'mvn deploy -X'
+                            sh 'mvn clean deploy'
                         }
                     }
                 }
