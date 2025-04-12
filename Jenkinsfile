@@ -37,17 +37,32 @@ pipeline {
         //    }
         // }
 
-        stage('Nexus Deployment') {
-            steps {
-                script {
-                    ["product-service"].each { project ->
-                        echo "Deploying project: ${project}"
-                        dir(project) {
-                            sh 'mvn clean deploy '
-                        }
-                    }
-                }
-            }
+      stage('Upload Artifact to Nexus') {
+    steps {
+        script {
+            def version = "1.0-SNAPSHOT" // أو تجيبها من pom.xml
+            def projectName = "product-service"
+
+            nexusArtifactUploader(
+                nexusVersion: 'nexus3',
+                protocol: 'http',
+                nexusUrl: '192.168.186.128:8081', // بدّلها بالـ Nexus IP/URL متاعك
+                groupId: 'org.tokkom',
+                version: version,
+                repository: 'maven-snapshots', // استعمل المرايا الصحيحة حسب settings.xml
+                credentialsId: 'nexus-credentials', // هذا ID لازم يكون مضاف في Jenkins (username/password متاع Nexus)
+                artifacts: [
+                    [
+                        artifactId: projectName,
+                        classifier: '',
+                        file: "target/${projectName}-${version}.jar",
+                        type: 'jar'
+                    ]
+                ]
+            )
         }
+    }
+}
+
     }
 }
