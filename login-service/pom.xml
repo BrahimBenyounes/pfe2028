@@ -95,9 +95,9 @@
     <!-- Deploy to Nexus -->
     <distributionManagement>
         <repository>
-            <id>deploymentRepo</id>
-            <name>maven-snapshots</name>
-            <url>http://192.168.186.128:1932/repository/maven-snapshots/</url>
+            <id>maven-snapshots-brahim</id>
+            <name>maven-snapshots-brahim</name>
+            <url>http://192.168.186.128:8081/repository/maven-snapshots/</url>
         </repository>
     </distributionManagement>
 
