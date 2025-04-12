@@ -18,22 +18,12 @@ pipeline {
        
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
         SONAR_HOST_URL = 'http://192.168.186.128:9001'
-        SONAR_LOGIN = 'admin'
-        SONAR_PASSWORD = 'Sonra@@@@@@@@2025'
+        SONAR_TOKEN = 'sqa_c3bb610452c05f15d1882a711b34657c8f2bfdd3'  // التوكن الذي تم إنشاؤه
     }
 
     stages {
 
-          //stage('Junit and Mockito Tests') {
-                   // steps {
-                       // script {
-                          //  dir('login-service') {
-                             //   sh 'mvn clean test'
-                          //  }
-                       // }
-                   // }
-               // }
-     stage('SonarQube Analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 script {
                     ["login-service"].each { project ->
@@ -41,14 +31,11 @@ pipeline {
                         def projectKey = "${project}-${getTimeStamp()}"
                         dir(project) {
                             sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true'
-                            sh "mvn sonar:sonar -Dsonar.login=${env.SONAR_LOGIN} -Dsonar.password=${env.SONAR_PASSWORD} -Dsonar.projectKey=${projectKey} -Dsonar.host.url=${env.SONAR_HOST_URL}"
+                            sh "mvn sonar:sonar -Dsonar.token=${env.SONAR_TOKEN} -Dsonar.projectKey=${projectKey} -Dsonar.host.url=${env.SONAR_HOST_URL}"
                         }
                     }
                 }
             }
         }
-     
-
-   
     }
 }
