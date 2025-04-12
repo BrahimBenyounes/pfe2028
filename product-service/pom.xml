@@ -64,7 +64,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+          </dependency>
 
         <dependency>
             <groupId>io.micrometer</groupId>
@@ -74,21 +74,21 @@
     </dependencies>
     <!-- Deploy to Nexus -->
     
+   <distributionManagement>
+  <repository>
+    <id>nexus</id>
+    <name>Releases</name>
+    <url>http://192.168.186.128:8081/repository/maven-releases</url>
+  </repository>
+  <snapshotRepository>
+    <id>nexus</id>
+    <name>Snapshot</name>
+    <url>http://192.168.186.128:8081/repository/maven-snapshots</url>
+  </snapshotRepository>
+</distributionManagement>
 
 
 
-<distributionManagement>
-    <repository>
-      <id>nexus</id>
-      <name>Releases</name>
-      <url>http://192.168.186.128:8081/repository/maven-releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>nexus</id>
-      <name>Snapshot</name>
-      <url>hhttp://192.168.186.128:8081/repository/maven-snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
 
 
 </project>
