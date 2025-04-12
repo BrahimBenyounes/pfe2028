@@ -96,7 +96,7 @@
    <distributionManagement>
         <repository>
             <id>maven-snapshots-brahim</id>
-            <name>Snapshots Repository</name>
+            <name>maven-snapshots-brahim</name>
             <url>http://192.168.186.128:8081/repository/maven-snapshots/</url>
         </repository>
     </distributionManagement>
