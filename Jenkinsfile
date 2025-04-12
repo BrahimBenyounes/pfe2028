@@ -40,7 +40,7 @@ pipeline {
         stage('Nexus Deployment') {
             steps {
                 script {
-                    ["login-service"].each { project ->
+                    ["product-service"].each { project ->
                         echo "Deploying project: ${project}"
                         dir(project) {
                             sh 'mvn clean deploy '
