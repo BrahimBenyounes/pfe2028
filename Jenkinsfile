@@ -24,16 +24,29 @@ pipeline {
 
     stages {
 
-          stage('Junit and Mockito Tests') {
-                    steps {
-                        script {
-                            dir('login-service') {
-                                sh 'mvn clean test'
-                            }
+          //stage('Junit and Mockito Tests') {
+                   // steps {
+                       // script {
+                          //  dir('login-service') {
+                             //   sh 'mvn clean test'
+                          //  }
+                       // }
+                   // }
+               // }
+     stage('SonarQube Analysis') {
+            steps {
+                script {
+                    ["login-service"].each { project ->
+                        echo "Processing project: ${project}"
+                        def projectKey = "${project}-${getTimeStamp()}"
+                        dir(project) {
+                            sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true'
+                            sh "mvn sonar:sonar -Dsonar.login=${env.SONAR_LOGIN} -Dsonar.password=${env.SONAR_PASSWORD} -Dsonar.projectKey=${projectKey} -Dsonar.host.url=${env.SONAR_HOST_URL}"
                         }
                     }
                 }
-
+            }
+        }
      
 
    
