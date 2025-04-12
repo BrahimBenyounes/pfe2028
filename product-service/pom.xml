@@ -73,14 +73,22 @@
 
     </dependencies>
     <!-- Deploy to Nexus -->
-      <!-- Deploy to Nexus -->
-  
- <distributionManagement>
-  <snapshotRepository>
-    <id>snapshotnexus</id>
-    <url>http://192.168.186.128:8081/repository/maven-snapshots/</url>
-  </snapshotRepository>
-</distributionManagement>
+    
+
+
+
+<distributionManagement>
+    <repository>
+      <id>nexus</id>
+      <name>Releases</name>
+      <url>http://192.168.186.128:8081/repository/maven-releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>nexus</id>
+      <name>Snapshot</name>
+      <url>hhttp://192.168.186.128:8081/repository/maven-snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 
 
 </project>
